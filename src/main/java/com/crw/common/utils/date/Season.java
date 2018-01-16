@@ -62,4 +62,24 @@ public enum Season {
                 return null;
         }
     }
+
+    /**
+     * 转换为中文名
+     *
+     * @return 季节的中文名
+     */
+    public String toChinese() {
+        switch (this) {
+            case SPRING:
+                return "春";
+            case SUMMER:
+                return "夏";
+            case AUTUMN:
+                return "秋";
+            case WINTER:
+                return "冬";
+            default:
+                return null;
+        }
+    }
 }

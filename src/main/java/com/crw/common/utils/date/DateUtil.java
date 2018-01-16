@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 日期操作工具
+ */
 public class DateUtil {
 
     private static final ThreadLocal<SimpleDateFormat> threadLocal = new ThreadLocal<SimpleDateFormat>();
@@ -635,6 +638,37 @@ public class DateUtil {
     }
 
     /**
+     * 获取当前日期 。默认yyyy-MM-dd HH:mm:ss格式。失败返回null。
+     *
+     * @return 日期
+     */
+    public static String now() {
+        return DateToString(new Date(), DatePattern.YYYY_MM_DD_HH_MM_SS);
+    }
+
+    /**
+     * 转换为Calendar对象
+     *
+     * @param millis 时间戳
+     * @return Calendar对象
+     */
+    public static Calendar calendar(long millis) {
+        final Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(millis);
+        return cal;
+    }
+
+    /**
+     * 转换为Calendar对象
+     *
+     * @param date 日期对象
+     * @return Calendar对象
+     */
+    public static Calendar calendar(Date date) {
+        return calendar(date.getTime());
+    }
+
+    /**
      * 获取日期的时间。默认HH:mm:ss格式。失败返回null。
      *
      * @param date 日期字符串
@@ -708,6 +742,58 @@ public class DateUtil {
     }
 
     /**
+     * 获取日期的月份。失败返回null。
+     *
+     * @param date 日期字符串
+     * @return 月份
+     */
+    public static Month getMonthEnum(String date) {
+        Month month = null;
+        DatePattern datePattern = getDatePattern(date);
+        if (datePattern != null) {
+            Date myDate = StringToDate(date, datePattern);
+            month = getMonthEnum(myDate);
+        }
+        return month;
+    }
+
+    /**
+     * 获取日期的月份。失败返回null。
+     *
+     * @param date 日期
+     * @return 月份
+     */
+    public static Month getMonthEnum(Date date) {
+        return Month.of(getMonth(date) - 1);
+    }
+
+    /**
+     * 获取日期的季节。失败返回null。
+     *
+     * @param date 日期字符串
+     * @return 季节
+     */
+    public static Season getSeason(String date) {
+        Season season = null;
+        DatePattern datePattern = getDatePattern(date);
+        if (datePattern != null) {
+            Date myDate = StringToDate(date, datePattern);
+            season = getSeason(myDate);
+        }
+        return season;
+    }
+
+    /**
+     * 获取日期的季节。失败返回null。
+     *
+     * @param date 日期
+     * @return 季节
+     */
+    public static Season getSeason(Date date) {
+        return Season.of(getMonth(date) / 3 + 1);
+    }
+
+    /**
      * 获取两个日期相差的天数
      *
      * @param date      日期字符串
@@ -732,6 +818,77 @@ public class DateUtil {
             num = (int) (time / (24 * 60 * 60 * 1000));
         }
         return num;
+    }
+
+    /**
+     * 获取两个日期相差的月数
+     * 在非重置情况下，如果起始日期的天大于结束日期的天，月数要少算1（不足1个月）
+     *
+     * @param date      日期字符串
+     * @param otherDate 另一个日期字符串
+     * @return 相差月数。如果失败则返回-1
+     */
+    public static int getIntervalMonths(String date, String otherDate, boolean isReset) {
+        return getIntervalMonths(StringToDate(date), StringToDate(otherDate), isReset);
+    }
+
+    /**
+     * 获取两个日期相差的月数
+     * 在非重置情况下，如果起始日期的天大于结束日期的天，月数要少算1（不足1个月）
+     *
+     * @param date      日期
+     * @param otherDate 另一个日期
+     * @return 相差月数。
+     */
+    public static int getIntervalMonths(Date date, Date otherDate, boolean isReset) {
+        final Calendar beginCal = calendar(date);
+        final Calendar endCal = calendar(otherDate);
+        final int betweenYear = endCal.get(Calendar.YEAR) - beginCal.get(Calendar.YEAR);
+        final int betweenMonthOfYear = endCal.get(Calendar.MONTH) - beginCal.get(Calendar.MONTH);
+        int result = betweenYear * 12 + betweenMonthOfYear;
+        if (!isReset) {
+            endCal.set(Calendar.YEAR, beginCal.get(Calendar.YEAR));
+            endCal.set(Calendar.MONTH, beginCal.get(Calendar.MONTH));
+            long between = endCal.getTimeInMillis() - beginCal.getTimeInMillis();
+            if (between < 0) {
+                return result - 1;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 获取两个日期相差的年数
+     * 在非重置情况下，如果起始日期的月大于结束日期的月，年数要少算1（不足1年）
+     *
+     * @param date      日期字符串
+     * @param otherDate 另一个日期字符串
+     * @return 相差年数。如果失败则返回-1
+     */
+    public static int getIntervalYears(String date, String otherDate, boolean isReset) {
+        return getIntervalYears(StringToDate(date), StringToDate(otherDate), isReset);
+    }
+
+    /**
+     * 获取两个日期相差的年数
+     * 在非重置情况下，如果起始日期的月大于结束日期的月，年数要少算1（不足1年）
+     *
+     * @param date      日期
+     * @param otherDate 另一个日期
+     * @return 相差年数。如果失败则返回-1
+     */
+    public static int getIntervalYears(Date date, Date otherDate, boolean isReset) {
+        final Calendar beginCal = DateUtil.calendar(date);
+        final Calendar endCal = DateUtil.calendar(otherDate);
+        int result = endCal.get(Calendar.YEAR) - beginCal.get(Calendar.YEAR);
+        if (!isReset) {
+            endCal.set(Calendar.YEAR, beginCal.get(Calendar.YEAR));
+            long between = endCal.getTimeInMillis() - beginCal.getTimeInMillis();
+            if (between < 0) {
+                return result - 1;
+            }
+        }
+        return result;
     }
 
     /**

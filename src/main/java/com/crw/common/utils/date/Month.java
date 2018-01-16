@@ -19,7 +19,6 @@ import java.util.Calendar;
  * @see Calendar#NOVEMBER
  * @see Calendar#DECEMBER
  * @see Calendar#UNDECIMBER
- *
  */
 public enum Month {
 
@@ -134,6 +133,42 @@ public enum Month {
                 return DECEMBER;
             case Calendar.UNDECIMBER:
                 return UNDECIMBER;
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * 转换为中文名
+     *
+     * @return 季节的中文名
+     */
+    public String toChinese() {
+        switch (this) {
+            case JANUARY:
+                return "一月";
+            case FEBRUARY:
+                return "二月";
+            case MARCH:
+                return "三月";
+            case APRIL:
+                return "四月";
+            case MAY:
+                return "五月";
+            case JUNE:
+                return "六月";
+            case JULY:
+                return "七月";
+            case AUGUST:
+                return "八月";
+            case SEPTEMBER:
+                return "九月";
+            case OCTOBER:
+                return "十月";
+            case NOVEMBER:
+                return "十一月";
+            case DECEMBER:
+                return "十二月";
             default:
                 return null;
         }
