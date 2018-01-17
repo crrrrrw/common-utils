@@ -24,17 +24,15 @@ public class DateUtilTest {
         String dateStr2 = DateUtil.addMinute(dateStr, 2);
         System.out.println(dateStr2); // 2018-01-16 10:11:56
 
-        String dateStr3 = DateUtil.DateToString(date, "y-M-d");
-        String dateStr4 = DateUtil.DateToString(date, DatePattern.MM_DD_HH_MM_CN);
-        String dateStr5 = DateUtil.DateToString(date, DatePattern.YYYY_MM_DD_HH_MM_SS_EN);
-        System.out.println(dateStr3); // 2018-1-16
-        System.out.println(dateStr4); // 01月16日 10:09
-        System.out.println(dateStr5); // 2018/01/16 10:09:56
+        System.out.println(DateUtil.DateToString(date, "y-M-d")); // 2018-1-16
+        System.out.println(DateUtil.DateToString(date, DatePattern.MM_DD_HH_MM_CN)); // 01月16日 10:09
+        System.out.println(DateUtil.DateToString(date, DatePattern.YYYY_MM_DD_HH_MM_SS_EN)); // 2018/01/16 10:09:56
+        System.out.println(DateUtil.DateToString(date1, DatePattern.PURE_DATE_PATTERN)); // 20180117
+        System.out.println(DateUtil.DateToString(date1, DatePattern.HTTP_DATETIME_PATTERN)); // 星期三, 17 一月 2018 10:09:56 CST
+        System.out.println(DateUtil.DateToString(date1, DatePattern.JDK_DATETIME_PATTERN)); // 星期三 一月 17 10:09:56 CST 2018
 
-        String date3 = DateUtil.getDate(new Date(1516069599527l));
-        System.out.println(date3); // 2018-01-16
-        String date4 = DateUtil.getDate("2018-01-16 10:18:56");
-        System.out.println(date4); // 2018-01-16
+        System.out.println(DateUtil.getDate(new Date(1516069599527l))); // 2018-01-16
+        System.out.println(DateUtil.getDate("2018-01-16 10:18:56")); // 2018-01-16
 
         DatePattern datePattern = DateUtil.getDatePattern("2018年1月16日");
         System.out.println(datePattern.toString());// YYYY_MM_DD_CN
@@ -96,5 +94,16 @@ public class DateUtilTest {
         System.out.println(DateUtil.getIntervalYears(dateY, dateZ, false)); // 4
         System.out.println(DateUtil.getIntervalYears(dateStrX, dateStrZ, false)); // 3
         System.out.println(DateUtil.getIntervalYears(dateStrY, dateStrZ, false)); // 4
+
+
+        Date date5 = DateUtil.StringToDate("2018-01-17 10:15:33");
+        System.out.println(DateUtil.getWeekOfYear(date5)); // 3
+        System.out.println(DateUtil.getWeekOfMonth(date5));// 3
+        System.out.println(DateUtil.getDayOfMonth(date5)); // 17
+        System.out.println(DateUtil.getDayOfWeek(date5));// 4
+        System.out.println(DateUtil.getDayOfWeekInMonth(date5));// 3
+        System.out.println(DateUtil.getDayOfWeekEnum(date5));// WEDNESDAY
+        System.out.println(DateUtil.isAM(date5));// true
+        System.out.println(DateUtil.isPM(date5));// false
     }
 }

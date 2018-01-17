@@ -910,4 +910,91 @@ public class DateUtil {
     public static SimpleLunarCalendar getSimpleLunarCalendar(Date date) {
         return new SimpleLunarCalendar(date);
     }
+
+    /**
+     * 获得指定日期是所在年份的第几周<br>
+     * 此方法返回值与一周的第一天有关，比如：<br>
+     * 2016年1月3日为周日，如果一周的第一天为周日，那这天是第二周（返回2）<br>
+     * 如果一周的第一天为周一，那这天是第一周（返回1）
+     *
+     * @param date 日期
+     * @return 周
+     */
+    public static int getWeekOfYear(Date date) {
+        return calendar(date).get(Calendar.WEEK_OF_YEAR);
+    }
+
+    /**
+     * 获得指定日期是所在月份的第几周<br>
+     * 此方法返回值与一周的第一天有关，比如：<br>
+     * 2016年1月3日为周日，如果一周的第一天为周日，那这天是第二周（返回2）<br>
+     * 如果一周的第一天为周一，那这天是第一周（返回1）
+     *
+     * @param date 日期
+     * @return 周
+     */
+    public static int getWeekOfMonth(Date date) {
+        return calendar(date).get(Calendar.WEEK_OF_YEAR);
+    }
+
+    /**
+     * 获得指定日期是这个日期所在月份的第几天<br>
+     *
+     * @param date 日期
+     * @return 天
+     */
+    public static int getDayOfMonth(Date date) {
+        return calendar(date).get(Calendar.DAY_OF_MONTH);
+    }
+
+    /**
+     * 获得指定日期是星期几，1表示周日，2表示周一
+     *
+     * @param date 日期
+     * @return 星期几
+     */
+    public static int getDayOfWeek(Date date) {
+        return calendar(date).get(Calendar.DAY_OF_WEEK);
+    }
+
+    /**
+     * 获得天所在的周是这个月的第几周
+     *
+     * @param date 日期
+     * @return 第几周
+     */
+    public static int getDayOfWeekInMonth(Date date) {
+        return calendar(date).get(Calendar.DAY_OF_WEEK_IN_MONTH);
+    }
+
+    /**
+     * 获得指定日期是星期几
+     *
+     * @param date 日期
+     * @return {@link Week}
+     */
+    public static Week getDayOfWeekEnum(Date date) {
+        return Week.of(getDayOfWeek(date));
+    }
+
+    /**
+     * 是否为上午
+     *
+     * @param date 日期
+     * @return 是否为上午
+     */
+    public static boolean isAM(Date date) {
+        return Calendar.AM == calendar(date).get(Calendar.AM_PM);
+    }
+
+    /**
+     * 是否为下午
+     *
+     * @param date 日期
+     * @return 是否为下午
+     */
+    public static boolean isPM(Date date) {
+        return Calendar.PM == calendar(date).get(Calendar.AM_PM);
+    }
+
 }
