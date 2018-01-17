@@ -73,7 +73,6 @@ public enum Week {
      * 转换为中文名
      *
      * @return 星期的中文名
-     * @since 3.3.0
      */
     public String toChinese() {
         switch (this) {
